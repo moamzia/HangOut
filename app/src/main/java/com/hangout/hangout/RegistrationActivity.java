@@ -1,23 +1,22 @@
 package com.hangout.hangout;
 
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
-public class RegistrationActivity extends AppCompatActivity {
+import com.facebook.AccessToken;
+
+public class RegistrationActivity extends FragmentActivity implements FacebookLoginFragment.OnFacebookLoginListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-
     }
 
-    public void registerThroughFacebook(View view){
-        //TODO: connect to Facebook
+    @Override
+    public void onFacebookLogin(AccessToken accessToken) {
+        Log.d("FACEBOOK IN DA HOUSE", accessToken.getUserId());
     }
-
 }

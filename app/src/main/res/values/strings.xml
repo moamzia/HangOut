@@ -15,4 +15,10 @@
         completions."
     </string>
     <string name="title_activity_registration">RegistrationActivity</string>
+
+    <!-- Facebook APP ID -->
+    <string name="facebook_app_id">1088012744556664</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
