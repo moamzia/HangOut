@@ -1,4 +1,4 @@
-package com.hangout.hangout;
+package com.hangout.hangout.authentication;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -38,6 +38,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.hangout.hangout.R;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -55,8 +56,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
-    private static final String TAG = "";
+    private static final String TAG = "LoginActivity";
+    private static final String PACKAGE_NAME = "com.hangout.hangout.authentication";
+    private static final String MESSAGE_DIGEST_ALGORITHM = "SHA";
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -64,8 +66,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
-    public static final String PACKAGE_NAME = "com.hangout.hangout";
-    public static final String MESSAGE_DIGEST_ALGORITHM = "SHA";
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
