@@ -10,11 +10,4 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".authentication.RegistrationActivity">
 
-    <fragment
-        android:id="@+id/facebook_login_fragment_id"
-        android:name="com.hangout.hangout.authentication.FacebookLoginFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_facebook_login" />
-
 </android.support.design.widget.CoordinatorLayout>
