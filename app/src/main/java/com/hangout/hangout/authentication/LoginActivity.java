@@ -96,6 +96,8 @@ public class LoginActivity extends AppCompatActivity implements FacebookLoginFra
         if (requestCode == REQUEST_CODE_EMAIL && resultCode == RESULT_OK) {
             String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 
+            Log.d(TAG, "something");
+
             addEmailsToAutoComplete(accountName);
         }
     }
