@@ -16,6 +16,7 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.hangout.hangout.R;
+import com.hangout.hangout.exceptions.Logger;
 
 
 /**
@@ -25,6 +26,9 @@ import com.hangout.hangout.R;
  * to handle interaction events.
  */
 public class FacebookLoginFragment extends Fragment {
+
+    private static final Logger LOG = Logger.getErrorLogger(FacebookLoginFragment.class);
+
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     private OnFacebookLoginListener callBack;
@@ -61,7 +65,7 @@ public class FacebookLoginFragment extends Fragment {
             public void onSuccess(LoginResult loginResult) {
                 // App code
                 for (String recentlyGrantedPermissions : loginResult.getRecentlyGrantedPermissions()) {
-                    Log.d("onCreateView Facebook Fragment", recentlyGrantedPermissions);
+                    LOG.debug(recentlyGrantedPermissions);
                 }
             }
 

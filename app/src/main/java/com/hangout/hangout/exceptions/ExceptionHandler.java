@@ -11,17 +11,16 @@ public enum ExceptionHandler implements Thread.UncaughtExceptionHandler{
 
     INSTANCE;
 
-    private static final String TAG = "ExceptionHandler";
     private Thread.UncaughtExceptionHandler defaultUEH;
+    private static final Logger LOG = Logger.getErrorLogger(ExceptionHandler.class);
 
-    private ExceptionHandler(){
+    ExceptionHandler(){
         defaultUEH = Thread.getDefaultUncaughtExceptionHandler();
     }
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
-        Log.e(TAG, ex.getMessage(), ex);
-        Log.e(TAG, "thread name = " + thread.getName());
+        LOG.error("Something unexpected happened: " + ex.getMessage(), ex);
 
         defaultUEH.uncaughtException(thread, ex);
     }
