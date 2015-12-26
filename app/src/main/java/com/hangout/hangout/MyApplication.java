@@ -3,6 +3,7 @@ package com.hangout.hangout;
 import android.app.Application;
 
 import com.facebook.FacebookSdk;
+import com.hangout.hangout.exceptions.ExceptionHandler;
 import com.parse.Parse;
 
 /**
@@ -14,6 +15,8 @@ public class MyApplication extends Application {
 
     public void onCreate(){
         super.onCreate();
+        Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler.INSTANCE);
+
         Parse.enableLocalDatastore(this);
         Parse.initialize(this);
 

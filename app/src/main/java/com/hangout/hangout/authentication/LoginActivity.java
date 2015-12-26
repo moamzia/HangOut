@@ -4,26 +4,16 @@ import android.accounts.AccountManager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.LoaderManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -39,18 +29,18 @@ import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.appevents.AppEventsLogger;
-import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.hangout.hangout.R;
+import com.hangout.hangout.exceptions.ExceptionHandler;
+import com.hangout.hangout.exceptions.Logger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.IllegalFormatException;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -58,6 +48,8 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements FacebookLoginFragment.OnFacebookLoginListener {
+
+    private static final Logger LOG = Logger.prepareToLog(LoginActivity.class);
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -88,32 +80,18 @@ public class LoginActivity extends AppCompatActivity implements FacebookLoginFra
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-
     private static final int REQUEST_CODE_EMAIL = 1;
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_EMAIL && resultCode == RESULT_OK) {
-            String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-
-            addEmailsToAutoComplete(accountName);
-        }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
-        try {
-            Intent intent = AccountPicker.newChooseAccountIntent(null, null,
-                    new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, false, null, null, null, null);
-            startActivityForResult(intent, REQUEST_CODE_EMAIL);
-        } catch (ActivityNotFoundException e) {
-
-        }
+        Intent intent = AccountPicker.newChooseAccountIntent(null, null,
+                new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, false, null, null, null, null);
+        startActivityForResult(intent, REQUEST_CODE_EMAIL);
 
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
@@ -156,6 +134,16 @@ public class LoginActivity extends AppCompatActivity implements FacebookLoginFra
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_EMAIL && resultCode == RESULT_OK) {
+            //This means that the result is coming from AccountPicker. Now we have logged in user's email
+            String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+
+            addEmailsToAutoComplete(accountName);
+        }
     }
 
     /**
@@ -305,8 +293,12 @@ public class LoginActivity extends AppCompatActivity implements FacebookLoginFra
         }
     }
 
+    /**
+     * Adds the String passed to ArrayAdapter to add it to the dropdown, so user can select if wanted to.
+     *
+     * @param emailAddressCollection
+     */
     private void addEmailsToAutoComplete(String emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, Arrays.asList(new String[]{emailAddressCollection}));
