@@ -2,6 +2,9 @@ package com.hangout.hangout.exceptions;
 
 import com.parse.ParseObject;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Created by Amin on 25-Dec-15.
  */
@@ -15,6 +18,13 @@ public class Logger{
 
     public void e(){
 
+    }
+
+    private static final Map<Class<?>, Logger> map = new ConcurrentHashMap<Class<?>, Logger>();
+
+    public static <T> Logger prepareToLog(Class<T> callerClass) {
+        map.get(callerClass);
+        return null;
     }
 
     private class AudiLog extends ParseObject{
