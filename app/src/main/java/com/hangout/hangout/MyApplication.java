@@ -4,9 +4,11 @@ import android.app.Application;
 
 import com.facebook.FacebookSdk;
 import com.hangout.hangout.exceptions.ExceptionHandler;
-import com.hangout.hangout.exceptions.Log;
+import com.hangout.hangout.exceptions.entity.Log;
 import com.parse.Parse;
+import com.parse.ParseACL;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 /**
  * Initializes the SDKs
@@ -23,6 +25,8 @@ public class MyApplication extends Application {
         Parse.enableLocalDatastore(this);
         ParseObject.registerSubclass(Log.class);
         Parse.initialize(this);
+        ParseUser.enableAutomaticUser();
+        ParseACL.setDefaultACL(new ParseACL(), true);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
     }

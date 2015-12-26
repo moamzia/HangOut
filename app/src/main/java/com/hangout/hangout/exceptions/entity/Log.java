@@ -1,4 +1,4 @@
-package com.hangout.hangout.exceptions;
+package com.hangout.hangout.exceptions.entity;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;

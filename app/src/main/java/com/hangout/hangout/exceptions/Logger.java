@@ -1,7 +1,6 @@
 package com.hangout.hangout.exceptions;
 
-import com.parse.ParseClassName;
-import com.parse.ParseObject;
+import com.hangout.hangout.exceptions.entity.Log;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
