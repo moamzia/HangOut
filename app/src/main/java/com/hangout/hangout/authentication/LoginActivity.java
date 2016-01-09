@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.facebook.AccessToken;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.auth.GoogleAuthUtil;
@@ -38,7 +37,7 @@ import java.util.Arrays;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements FacebookLoginFragment.OnFacebookLoginListener {
+public class LoginActivity extends AppCompatActivity {
 
     private static final Logger LOG = Logger.getLogger(LoginActivity.class, true);
 
@@ -109,11 +108,35 @@ public class LoginActivity extends AppCompatActivity implements FacebookLoginFra
             }
         });
 
+        findViewById(R.id.facebook_login).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                facebookLogin();
+            }
+        });
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    private void facebookLogin() {
+        ParseFacebookUtils.logInWithReadPermissionsInBackground(this, null, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if (user == null) {
+                    LOG.debug("User cancelled facebook login");
+                } else if (user.isNew()) {
+                    LOG.debug("User is registered");
+                    //TODO: user is new. So go through the first preference setup
+                } else {
+                    LOG.debug("User is logged in");
+                    //TODO: user is logged in and it's not the first time, so redirect to main page
+                }
+            }
+        });
     }
 
     @Override
@@ -124,7 +147,7 @@ public class LoginActivity extends AppCompatActivity implements FacebookLoginFra
             String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 
             addEmailsToAutoComplete(accountName);
-        }else if(MyApplication.FACEBOOK_LOGIN_REQUEST_CODE == requestCode){
+        } else if (MyApplication.FACEBOOK_LOGIN_REQUEST_CODE == requestCode) {
             ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -203,7 +226,6 @@ public class LoginActivity extends AppCompatActivity implements FacebookLoginFra
                 @Override
                 public void done(ParseUser user, ParseException e) {
                     if (user == null) {
-                        LOG.info("user is logged in");
                         //TODO: show a message
                     } else {
                         //TODO: User is loggedin. Redirect to main activity
@@ -276,11 +298,11 @@ public class LoginActivity extends AppCompatActivity implements FacebookLoginFra
         mEmailView.setAdapter(adapter);
     }
 
-    @Override
-    public void onFacebookLogin(AccessToken accessToken) {
-        LOG.debug("FACEBOOK IN DA HOUSE " + accessToken.getUserId());//TODO need to change this
-
-//        ParseUser.
-    }
+//    @Override
+//    public void onFacebookLogin(AccessToken accessToken) {
+//        LOG.debug("FACEBOOK IN DA HOUSE " + accessToken.getUserId());//TODO need to change this
+//
+////        ParseUser.
+//    }
 }
 

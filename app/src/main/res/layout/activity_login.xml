@@ -82,12 +82,20 @@
                 android:textStyle="bold"
                 android:onClick="redirectToRegister"/>
 
-            <fragment
-                android:id="@+id/facebook_login_fragment_id"
-                android:name="com.hangout.hangout.authentication.FacebookLoginFragment"
-                android:layout_width="match_parent"
+            <!--<fragment-->
+                <!--android:id="@+id/facebook_login_fragment_id"-->
+                <!--android:name="com.hangout.hangout.authentication.FacebookLoginFragment"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--tools:layout="@layout/fragment_facebook_login" />-->
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/facebook_login"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:layout="@layout/fragment_facebook_login" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp" />
 
         </LinearLayout>
     </ScrollView>
