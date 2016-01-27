@@ -176,7 +176,7 @@ public class Logger {
      * @return
      */
     public static <T> Logger getLogger(Class<T> callerClass, boolean logEverything) {
-        Logger logger = LOGGER_MAP.get(callerClass);
+        Logger logger = LOGGER_MAP.get(callerClass.getName());
 
         if (logger == null) {
             logger = new Logger(callerClass, logEverything);

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TextViewWithValidator">
+        <!-- Used to tell {@link ViewValidationInitializer} to not allow the action if text view is empty -->
+        <attr name="required" format="boolean"/>
+        <attr name="maxLengthAllowed" format="integer"/>
+    </declare-styleable>
+</resources>

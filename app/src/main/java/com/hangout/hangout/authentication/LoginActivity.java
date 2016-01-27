@@ -14,8 +14,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -27,10 +25,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.hangout.hangout.MyApplication;
 import com.hangout.hangout.R;
 import com.hangout.hangout.exceptions.Logger;
+import com.hangout.hangout.validator.ViewValidator;
+import com.hangout.hangout.validator.views.TextViewWithValidator;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 import java.util.Arrays;
 
@@ -41,17 +42,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final Logger LOG = Logger.getLogger(LoginActivity.class, true);
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-//    private static final int REQUEST_READ_CONTACTS = 0;
-//    private static final String PACKAGE_NAME = "com.hangout.hangout";
-//    private static final String MESSAGE_DIGEST_ALGORITHM = "SHA";
-
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private TextViewWithValidator mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;//TODO: check if this is needed
+    private View mProgressView;
     private View mLoginFormView;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -65,28 +59,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (TextViewWithValidator) findViewById(R.id.email);
 
         //This is to suggest email address of the Android user logged in OS
         Intent intent = AccountPicker.newChooseAccountIntent(null, null,
                 new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, false, null, null, null, null);
         startActivityForResult(intent, REQUEST_CODE_EMAIL);
-
-//        try {
-//            PackageInfo info = getPackageManager().getPackageInfo(
-//                    PACKAGE_NAME,
-//                    PackageManager.GET_SIGNATURES);
-//            for (Signature signature : info.signatures) {
-//                MessageDigest md = MessageDigest.getInstance(MESSAGE_DIGEST_ALGORITHM);
-//                md.update(signature.toByteArray());
-//                LOG.debug("KeyHash: " + Base64.encodeToString(md.digest(), Base64.DEFAULT));
-//            }
-//        } catch (PackageManager.NameNotFoundException e) {
-//            LOG.error("PackageManager not found dummy", e);
-//        } catch (NoSuchAlgorithmException e) {
-//            LOG.error("No such digest The digest used is not found", e);
-//        }
-
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -100,8 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        findViewById(R.id.email_sign_in_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
@@ -111,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.facebook_login).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                ViewValidator.validate(LoginActivity.this, mEmailView);
                 facebookLogin();
             }
         });
@@ -185,8 +163,8 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -225,14 +203,42 @@ public class LoginActivity extends AppCompatActivity {
             ParseUser.logInInBackground(email, password, new LogInCallback() {
                 @Override
                 public void done(ParseUser user, ParseException e) {
+                    LOG.debug("error code is: " + e.getCode());
                     if (user == null) {
+                        //User does not exist
                         //TODO: show a message
                     } else {
+                        LOG.info("User is logged in");
                         //TODO: User is loggedin. Redirect to main activity
                     }
+                    //Have to hide the progress bar
+                    showProgress(false);
                 }
             });
         }
+
+    }
+
+    private void registerUser(String email, String password) {
+        ParseUser user = new ParseUser();
+        user.setUsername(email);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    LOG.debug("user registered manually");
+                    //success. TODO: Now we will redirect him to main page.
+                } else {
+                    if (e.getCode() == ParseException.USERNAME_TAKEN || e.getCode() == ParseException.EMAIL_TAKEN) {
+                        mEmailView.setError(getString(R.string.error_email_exists));
+                    } else {
+                        LOG.error("Something went wrong in registration of the user", e);
+                    }
+                }
+            }
+        });
     }
 
     private boolean isEmailValid(String email) {
