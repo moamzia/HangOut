@@ -12,6 +12,7 @@ public abstract class ValidationRule<T> {
     protected T ruleValue;
 
     public ValidationRule(Integer errorText, T ruleValue) {
+        this.ruleValue = ruleValue;
         this.errorText = errorText;
     }
 

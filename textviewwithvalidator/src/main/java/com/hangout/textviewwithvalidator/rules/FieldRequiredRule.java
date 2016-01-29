@@ -10,7 +10,7 @@ import com.moamzia.validator.ValidationRule;
  * Created by Amin on 28-Jan-16.
  */
 public class FieldRequiredRule extends ValidationRule<Boolean> {
-    public static final int DEFAULT_ERROR_RESOURCE_ID = R.string.error_too_long_text;
+    public static final int DEFAULT_ERROR_RESOURCE_ID = R.string.error_field_required;
 
     public FieldRequiredRule(Integer errorText, Boolean ruleValue) {
         super(errorText, ruleValue);

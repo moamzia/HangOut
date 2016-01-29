@@ -38,6 +38,8 @@ public enum ViewValidator {
                     validationRule.setRuleValue(validationRuleValue);
                     validationRule.setErrorText(errorTextRID);
                 }
+
+                validationRules.put(validationRuleClazz, validationRule);
             } catch (InstantiationException e) {
                 Log.e(TAG, e.getMessage());
             } catch (IllegalAccessException e) {

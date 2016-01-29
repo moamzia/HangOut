@@ -11,7 +11,7 @@ import com.moamzia.validator.ValidationRule;
 public class MaxLengthAllowedRule extends ValidationRule<Integer> {
     public static final int DEFAULT_ERROR_RESOURCE_ID = R.string.error_field_required;
 
-    public MaxLengthAllowedRule(int errorText, Integer ruleValue) {
+    public MaxLengthAllowedRule(Integer errorText, Integer ruleValue) {
         super(errorText, ruleValue);
     }
 
