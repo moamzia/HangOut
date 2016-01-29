@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.hangout.hangout.validator.views.TextViewWithValidator
+                <com.hangout.textviewwithvalidator.views.TextViewWithValidator
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -43,8 +43,9 @@
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
-                    custom:required="false"
-                    custom:maxLengthAllowed="253"/>
+                    custom:required="true"
+                    custom:maxLengthAllowed="253"
+                    custom:triggeringViewId="@+id/email_sign_in_button"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -52,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <com.hangout.textviewwithvalidator.views.TextViewWithValidator
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -62,12 +63,14 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    custom:triggeringViewId="@id/email_sign_in_button"
+                    custom:required="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/email_sign_in_button"
+                android:id="@id/email_sign_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

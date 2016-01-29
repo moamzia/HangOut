@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TextView With Validator</string>
+    <string name="error_too_long_text">Text is too long</string>
+    <string name="error_field_required">Field is required</string>
+</resources>

@@ -3,6 +3,9 @@
     <declare-styleable name="TextViewWithValidator">
         <!-- Used to tell {@link ViewValidationInitializer} to not allow the action if text view is empty -->
         <attr name="required" format="boolean"/>
+        <attr name="required_errorMessage" format="reference"/>
         <attr name="maxLengthAllowed" format="integer"/>
+        <attr name="maxLengthAllowed_errorMessage" format="reference"/>
+        <attr name="triggeringViewId" format="reference"/>
     </declare-styleable>
 </resources>

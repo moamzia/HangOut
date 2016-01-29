@@ -50,8 +50,5 @@ public class ExampleUnitTest extends AndroidTestCase {
                 // a primary email address if the user hasn't specified one.
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
 
-//        SimpleCursorAdapter adapter = new SimpleCursorAdapter(mockedContext, );
-
-//        cursorLoader.deliverResult();
     }
 }

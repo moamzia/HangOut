@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,16 +22,15 @@ import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.hangout.hangout.MyApplication;
-import com.hangout.hangout.R;
 import com.hangout.hangout.exceptions.Logger;
-import com.hangout.hangout.validator.ViewValidator;
-import com.hangout.hangout.validator.views.TextViewWithValidator;
+import com.hangout.textviewwithvalidator.views.TextViewWithValidator;
+import com.moamzia.validator.ViewValidator;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-
+import com.hangout.hangout.R;
 import java.util.Arrays;
 
 /**
@@ -57,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (TextViewWithValidator) findViewById(R.id.email);
@@ -71,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    attemptLogin(id);
                     return true;
                 }
                 return false;
@@ -81,14 +80,14 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.email_sign_in_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                attemptLogin(view.getId());
+//                ViewValidator.validate();
             }
         });
 
         findViewById(R.id.facebook_login).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewValidator.validate(LoginActivity.this, mEmailView);
                 facebookLogin();
             }
         });
@@ -157,45 +156,45 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void attemptLogin() {
+    private void attemptLogin(int id) {
         // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+//        mEmailView.setError(null);
+//        mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         final String email = mEmailView.getText().toString();
         final String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
+//        boolean cancel = false;
+//        View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_field_required));
-            focusView = mPasswordView;
-            cancel = true;
-        } else if (!isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
+//        if (TextUtils.isEmpty(password)) {
+//            mPasswordView.setError(getString(R.string.error_field_required));
+//            focusView = mPasswordView;
+//            cancel = true;
+//        } else if (!isPasswordValid(password)) {
+//            mPasswordView.setError(getString(R.string.error_invalid_password));
+//            focusView = mPasswordView;
+//            cancel = true;
+//        }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
+//        if (TextUtils.isEmpty(email)) {
+//            mEmailView.setError(getString(R.string.error_field_required));
+//            focusView = mEmailView;
+//            cancel = true;
+//        } else if (!isEmailValid(email)) {
+//            mEmailView.setError(getString(R.string.error_invalid_email));
+//            focusView = mEmailView;
+//            cancel = true;
+//        }
+//
+//        if (cancel) {
+//            // There was an error; don't attempt login and focus the first
+//            // form field with an error.
+//            focusView.requestFocus();
+        if(ViewValidator.validate(id)) {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
