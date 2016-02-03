@@ -20,14 +20,4 @@ public class FieldRequiredRule extends ValidationRule<Boolean> {
     public boolean isValid(TextView textView) {
         return !TextUtils.isEmpty(textView.getText().toString());
     }
-
-    @Override
-    public Boolean getRuleValue() {
-        return ruleValue;
-    }
-
-    @Override
-    public void setRuleValue(Boolean ruleValue) {
-        this.ruleValue = ruleValue;
-    }
 }

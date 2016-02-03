@@ -6,6 +6,12 @@
         <attr name="required_errorMessage" format="reference"/>
         <attr name="maxLengthAllowed" format="integer"/>
         <attr name="maxLengthAllowed_errorMessage" format="reference"/>
+        <attr name="minLengthAllowed" format="integer"/>
+        <attr name="minLengthAllowed_errorMessage" format="reference"/>
         <attr name="triggeringViewId" format="reference"/>
+        <attr name="fieldType" format="enum">
+            <enum name="email" value="0"/>
+            <enum name="username" value="1"/>
+        </attr>
     </declare-styleable>
 </resources>

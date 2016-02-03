@@ -5,7 +5,7 @@ import android.widget.TextView;
 /**
  * Created by Amin on 28-Jan-16.
  */
-public class MyCustomRule extends ValidationRule<Integer>{
+public class MyCustomRule extends ValidationRule<Integer> {
     public MyCustomRule(Integer errorText, Integer ruleValue) {
         super(errorText, ruleValue);
     }

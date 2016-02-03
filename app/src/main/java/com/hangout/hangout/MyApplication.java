@@ -30,7 +30,6 @@ public class MyApplication extends Application {
         ParseUser.enableAutomaticUser();
         ParseACL.setDefaultACL(new ParseACL(), true);
 
-//        FacebookSdk.sdkInitialize(getApplicationContext()); probably not needed
         ParseFacebookUtils.initialize(getApplicationContext(), FACEBOOK_LOGIN_REQUEST_CODE);
     }
 

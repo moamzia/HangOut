@@ -2,4 +2,7 @@
     <string name="app_name">TextView With Validator</string>
     <string name="error_too_long_text">Text is too long</string>
     <string name="error_field_required">Field is required</string>
+    <string name="error_too_short_text">Text is too short</string>
+    <string name="error_not_valid_email">Not a valid email</string>
+    <string name="error_invalid_username">Only letters and digits and _ - allowed</string>
 </resources>

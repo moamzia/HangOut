@@ -31,22 +31,33 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/invalid_username_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/error_red"
+                android:text="Invalid Username Password"
+                />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+
                 <com.hangout.textviewwithvalidator.views.TextViewWithValidator
-                    android:id="@+id/email"
+                    android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
+                    android:hint="@string/prompt_username"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
                     custom:required="true"
-                    custom:maxLengthAllowed="2"
-                    custom:triggeringViewId="@+id/email_sign_in_button"/>
-<!--253-->
+                    custom:maxLengthAllowed="253"
+                    custom:minLengthAllowed="6"
+                    custom:fieldType="username"
+                    custom:triggeringViewId="@+id/login_button"/>
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -64,13 +75,15 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true"
-                    custom:triggeringViewId="@id/email_sign_in_button"
-                    custom:required="true"/>
+                    custom:minLengthAllowed="6"
+                    custom:maxLengthAllowed="253"
+                    custom:required="true"
+                    custom:triggeringViewId="@id/login_button"/>
 
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@id/email_sign_in_button"
+                android:id="@id/login_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

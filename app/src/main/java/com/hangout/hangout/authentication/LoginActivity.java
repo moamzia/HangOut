@@ -1,6 +1,5 @@
 package com.hangout.hangout.authentication;
 
-import android.accounts.AccountManager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -12,17 +11,14 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.facebook.appevents.AppEventsLogger;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.common.AccountPicker;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.hangout.hangout.MyApplication;
+import com.hangout.hangout.R;
 import com.hangout.hangout.exceptions.Logger;
+import com.hangout.hangout.registration.RegistrationActivity;
 import com.hangout.textviewwithvalidator.views.TextViewWithValidator;
 import com.moamzia.validator.ViewValidator;
 import com.parse.LogInCallback;
@@ -30,27 +26,19 @@ import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-import com.hangout.hangout.R;
-import java.util.Arrays;
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via username/password.
  */
 public class LoginActivity extends AppCompatActivity {
 
     private static final Logger LOG = Logger.getLogger(LoginActivity.class, true);
 
     // UI references.
-    private TextViewWithValidator mEmailView;
+    private TextViewWithValidator mUsernameView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
-    private static final int REQUEST_CODE_EMAIL = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (TextViewWithValidator) findViewById(R.id.email);
-
-        //This is to suggest email address of the Android user logged in OS
-        Intent intent = AccountPicker.newChooseAccountIntent(null, null,
-                new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, false, null, null, null, null);
-        startActivityForResult(intent, REQUEST_CODE_EMAIL);
+        mUsernameView = (TextViewWithValidator) findViewById(R.id.username);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -77,11 +60,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.email_sign_in_button).setOnClickListener(new OnClickListener() {
+        findViewById(R.id.login_button).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin(view.getId());
-//                ViewValidator.validate();
             }
         });
 
@@ -94,9 +76,6 @@ public class LoginActivity extends AppCompatActivity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void facebookLogin() {
@@ -106,11 +85,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (user == null) {
                     LOG.debug("User cancelled facebook login");
                 } else if (user.isNew()) {
-                    LOG.debug("User is registered");
-                    //TODO: user is new. So go through the first preference setup
+                    LOG.debug("User is new and just got registered");
+                    redirectToRegistration();
                 } else {
                     LOG.debug("User is logged in");
-                    //TODO: user is logged in and it's not the first time, so redirect to main page
+                    redirectToMainPage();
                 }
             }
         });
@@ -119,14 +98,19 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_EMAIL && resultCode == RESULT_OK) {
-            //This means that the result is coming from AccountPicker. Now we have logged in user's email
-            String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-
-            addEmailsToAutoComplete(accountName);
-        } else if (MyApplication.FACEBOOK_LOGIN_REQUEST_CODE == requestCode) {
+        if (MyApplication.FACEBOOK_LOGIN_REQUEST_CODE == requestCode) {
             ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    public void redirectToRegistration() {
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
+    }
+
+    public void redirectToMainPage() {
+//        Intent intent = new Intent(this, HomePageActivity.class);
+//        startActivity(intent);
     }
 
     /**
@@ -151,55 +135,17 @@ public class LoginActivity extends AppCompatActivity {
         AppEventsLogger.deactivateApp(this);
     }
 
-    public void redirectToRegister(View view) {
-        Intent intent = new Intent(this, RegistrationActivity.class);
-        startActivity(intent);
-    }
-
     private void attemptLogin(int id) {
-        // Reset errors.
-//        mEmailView.setError(null);
-//        mPasswordView.setError(null);
-
         // Store values at the time of the login attempt.
-        final String email = mEmailView.getText().toString();
+        final String username = mUsernameView.getText().toString();
         final String password = mPasswordView.getText().toString();
 
-//        boolean cancel = false;
-//        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-//        if (TextUtils.isEmpty(password)) {
-//            mPasswordView.setError(getString(R.string.error_field_required));
-//            focusView = mPasswordView;
-//            cancel = true;
-//        } else if (!isPasswordValid(password)) {
-//            mPasswordView.setError(getString(R.string.error_invalid_password));
-//            focusView = mPasswordView;
-//            cancel = true;
-//        }
-
-        // Check for a valid email address.
-//        if (TextUtils.isEmpty(email)) {
-//            mEmailView.setError(getString(R.string.error_field_required));
-//            focusView = mEmailView;
-//            cancel = true;
-//        } else if (!isEmailValid(email)) {
-//            mEmailView.setError(getString(R.string.error_invalid_email));
-//            focusView = mEmailView;
-//            cancel = true;
-//        }
-//
-//        if (cancel) {
-//            // There was an error; don't attempt login and focus the first
-//            // form field with an error.
-//            focusView.requestFocus();
-        if(ViewValidator.validate(id)) {
+        if (ViewValidator.validate(id)) {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
 
-            ParseUser.logInInBackground(email, password, new LogInCallback() {
+            ParseUser.logInInBackground(username, password, new LogInCallback() {
                 @Override
                 public void done(ParseUser user, ParseException e) {
                     LOG.debug("error code is: " + e.getCode());
@@ -208,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                         //TODO: show a message
                     } else {
                         LOG.info("User is logged in");
-                        //TODO: User is loggedin. Redirect to main activity
+                        redirectToMainPage();
                     }
                     //Have to hide the progress bar
                     showProgress(false);
@@ -231,27 +177,13 @@ public class LoginActivity extends AppCompatActivity {
                     //success. TODO: Now we will redirect him to main page.
                 } else {
                     if (e.getCode() == ParseException.USERNAME_TAKEN || e.getCode() == ParseException.EMAIL_TAKEN) {
-                        mEmailView.setError(getString(R.string.error_email_exists));
+                        mUsernameView.setError(getString(R.string.error_email_exists));
                     } else {
                         LOG.error("Something went wrong in registration of the user", e);
                     }
                 }
             }
         });
-    }
-
-    private boolean isEmailValid(String email) {
-        return email.contains("@");
-    }
-
-    /**
-     * Password is valid if its length is more than 6
-     *
-     * @param password
-     * @return
-     */
-    private boolean isPasswordValid(String password) {
-        return password.length() > 6;
     }
 
     /**
@@ -289,25 +221,5 @@ public class LoginActivity extends AppCompatActivity {
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
-
-    /**
-     * Adds the String passed to ArrayAdapter to add it to the dropdown, so user can select if wanted to.
-     *
-     * @param emailAddressCollection
-     */
-    private void addEmailsToAutoComplete(String emailAddressCollection) {
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, Arrays.asList(new String[]{emailAddressCollection}));
-
-        mEmailView.setAdapter(adapter);
-    }
-
-//    @Override
-//    public void onFacebookLogin(AccessToken accessToken) {
-//        LOG.debug("FACEBOOK IN DA HOUSE " + accessToken.getUserId());//TODO need to change this
-//
-////        ParseUser.
-//    }
 }
 

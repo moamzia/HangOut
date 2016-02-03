@@ -24,9 +24,13 @@ public abstract class ValidationRule<T> {
         this.errorText = errorText;
     }
 
+    public T getRuleValue(){
+        return ruleValue;
+    }
+
+    public void setRuleValue(T ruleValue){
+        this.ruleValue = ruleValue;
+    }
+
     public abstract boolean isValid(TextView textView);
-
-    public abstract T getRuleValue();
-
-    public abstract void setRuleValue(T t);
 }

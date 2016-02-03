@@ -24,10 +24,10 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
         TextView myView = new TextView(context);
-        ViewValidator.addViewAndItsValidationRules(myView, MyCustomRule.class, 10, R.string.test_error_text);
+//        ViewValidator.addViewAndItsValidationRules(myView, MyCustomRule.class, 10, R.string.test_error_text);
         assertEquals(4, 2 + 2);
 
-        ViewValidator.addViewAndItsValidationRules(myView, MyCustomRule.class, 25, R.string.test_error_text);
+//        ViewValidator.addViewAndItsValidationRules(myView, MyCustomRule.class, 25, R.string.test_error_text);
     }
 
 }
