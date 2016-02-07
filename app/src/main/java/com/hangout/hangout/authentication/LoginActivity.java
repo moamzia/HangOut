@@ -150,6 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void done(ParseUser user, ParseException e) {
                     LOG.debug("error code is: " + e.getCode());
                     if (user == null) {
+                        showInvalidUsernamePassword(true);
                         //User does not exist
                         //TODO: show a message
                     } else {
@@ -164,26 +165,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void registerUser(String email, String password) {
-        ParseUser user = new ParseUser();
-        user.setUsername(email);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    LOG.debug("user registered manually");
-                    //success. TODO: Now we will redirect him to main page.
-                } else {
-                    if (e.getCode() == ParseException.USERNAME_TAKEN || e.getCode() == ParseException.EMAIL_TAKEN) {
-                        mUsernameView.setError(getString(R.string.error_email_exists));
-                    } else {
-                        LOG.error("Something went wrong in registration of the user", e);
-                    }
-                }
-            }
-        });
+    private void showInvalidUsernamePassword(final boolean show){
+        findViewById(R.id.invalid_username_password).setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     /**

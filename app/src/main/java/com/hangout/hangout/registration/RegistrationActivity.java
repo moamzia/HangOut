@@ -19,6 +19,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hangout.hangout.R;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -65,6 +68,27 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
+    private void registerUser(String email, String password) {
+        ParseUser user = new ParseUser();
+        user.setUsername(email);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+//                    LOG.debug("user registered manually");
+                    //success. TODO: Now we will redirect him to main page.
+                } else {
+                    if (e.getCode() == ParseException.USERNAME_TAKEN || e.getCode() == ParseException.EMAIL_TAKEN) {
+//                        mUsernameView.setError(getString(R.string.error_email_exists));
+                    } else {
+//                        LOG.error("Something went wrong in registration of the user", e);
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

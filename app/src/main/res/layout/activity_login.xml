@@ -31,12 +31,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_launcher"
+                android:padding="40dp"/>
+
             <TextView
                 android:id="@+id/invalid_username_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/error_red"
                 android:text="Invalid Username Password"
+                android:visibility="gone"
                 />
 
             <android.support.design.widget.TextInputLayout
@@ -84,11 +92,24 @@
 
             <Button
                 android:id="@id/login_button"
-                style="?android:textAppearanceSmall"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in_short"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/email_register_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/action_register_short"
                 android:textStyle="bold" />
 
             <com.facebook.login.widget.LoginButton
@@ -97,15 +118,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"/>
-
-            <Button
-                android:id="@+id/email_register_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_register_short"
-                android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>
