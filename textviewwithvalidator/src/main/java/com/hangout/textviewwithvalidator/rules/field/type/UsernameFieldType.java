@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  */
 public class UsernameFieldType implements FieldType {
 
-    private static final String USERNAME_PATTERN = "^[a-z0-9_-]$";
+    private static final String USERNAME_PATTERN = "^[a-zA-Z0-9_-]+$";
 
     @Override
     public boolean isValid(String input) {
